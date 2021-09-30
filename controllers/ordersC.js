@@ -51,6 +51,23 @@ const getOrderById = asyncHandler(async (req, res) => {
       throw new Error('Order not found')
     }
   })
+//update user by admin
+const updateOrder = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
 
+  if (order) {
+    order.isDelivered=req.body.isDelivered || order.isDelivered
+    if(req.body.isDelivered)
+    {order.deliveredAt=Date.now()}
+    order.isReturned=req.body.isReturned || order.isReturned
+    const updatedOrder = await order.save()
+    res.json({
+      _id: updatedOrder._id
+    })
+  } else {
+    res.status(404)
+    throw new Error('User not found')
+  }
+})
   
   module.exports={addRentalItems,getOrderById}

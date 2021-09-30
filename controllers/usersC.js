@@ -137,7 +137,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id)
   
     if (user) {
-      user.name = req.body.name || user.name
+      user.username = req.body.username || user.username
       user.email = req.body.email || user.email
       user.isAdmin = req.body.isAdmin
   
@@ -145,7 +145,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   
       res.json({
         _id: updatedUser._id,
-        name: updatedUser.name,
+        username: updatedUser.username,
         email: updatedUser.email,
         isAdmin: updatedUser.isAdmin,
       })
