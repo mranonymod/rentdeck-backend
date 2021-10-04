@@ -22,7 +22,7 @@ const ProductSchema = new mongoose.Schema(
         desObj : { type: Object , required : true} ,
         images  : {type : [String] , required : true} ,
         typeOf : {type : String , required : true} ,
-        categories : { type: Array} ,
+        categories :[ {type: String}] ,
         rentalrate : {type : Number , required : true} ,
         condition : { type : String } ,
         countInStock: {

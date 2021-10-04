@@ -1,5 +1,5 @@
 const asyncHandler=require('express-async-handler')
-const genTk =require('../utils/genTk')
+const genTk =require('../utils/token')
 const User =require('../models/User')
 const bcrypt = require("bcryptjs");
 

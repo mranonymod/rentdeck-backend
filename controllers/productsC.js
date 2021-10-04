@@ -69,9 +69,17 @@ const searchProductbyTitle= asyncHandler(async(req,res)=>{
     res.status(404)
     throw new Error('Product not found')
   }
-const getCategories = asyncHandler(async(req,res)=>{
-  
 })
+
+const getByCategories = asyncHandler(async(req,res)=>{
+  const cat = req.body.categories
+  const prodCat=await Product.find({categories : {"$in" : cat} })
+  if (!prodCat.length==0) {
+    res.json(prodCat)
+  } else {
+    res.status(404)
+    throw new Error('Product not found')
+  }
 })
 const getTopProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({}).sort({ rating: -1 }).limit(10)
@@ -84,5 +92,6 @@ module.exports={
   getProductById,
   createProductReview,
   getTopProducts,
-  searchProductbyTitle
+  searchProductbyTitle,
+  getByCategories
 }

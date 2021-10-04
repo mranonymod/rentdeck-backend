@@ -51,23 +51,59 @@ const getOrderById = asyncHandler(async (req, res) => {
       throw new Error('Order not found')
     }
   })
-//update user by admin
-const updateOrder = asyncHandler(async (req, res) => {
+
+const getMyOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id })
+  res.json(orders)
+})
+const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
 
   if (order) {
-    order.isDelivered=req.body.isDelivered || order.isDelivered
-    if(req.body.isDelivered)
-    {order.deliveredAt=Date.now()}
-    order.isReturned=req.body.isReturned || order.isReturned
+    order.isPaid = true
+    order.paidAt = Date.now()
+    order.paymentResult = {
+      id: req.body.id,
+      status: req.body.status,
+      update_time: req.body.update_time,
+      email_address: req.body.payer.email_address,
+    }
+
     const updatedOrder = await order.save()
-    res.json({
-      _id: updatedOrder._id
-    })
+
+    res.json(updatedOrder)
   } else {
     res.status(404)
-    throw new Error('User not found')
+    throw new Error('Order not found')
   }
 })
-  
-  module.exports={addRentalItems,getOrderById}
+
+const updateOrderToDelivered = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+
+  if (order) {
+    order.isDelivered = true
+    order.deliveredAt = Date.now()
+
+    const updatedOrder = await order.save()
+
+    res.json(updatedOrder)
+  } else {
+    res.status(404)
+    throw new Error('Order not found')
+  }
+})
+const updateOrderToReturned = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+
+  if (order) {
+    order.isReturned = true
+    const updatedOrder = await order.save()
+
+    res.json(updatedOrder)
+  } else {
+    res.status(404)
+    throw new Error('Order not found')
+  }
+})
+  module.exports={addRentalItems,getOrderById , getMyOrders ,updateOrderToPaid, updateOrderToDelivered, updateOrderToReturned}
