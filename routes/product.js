@@ -3,11 +3,11 @@ const { getProducts , getProductById , searchProductbyTitle , getTopProducts , g
 //GET ALL PROUDUCTS
 router.route('/').get(getProducts)
 
-router.route('/s').get(searchProductbyTitle)
+router.route('/s?:q').get(searchProductbyTitle)
 
 router.route('/categories').post(getByCategories)
 
-router.route('/:id').post(getProductById)
+router.route('/id/:id').get(getProductById)
 
 
 module.exports=router

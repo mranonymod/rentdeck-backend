@@ -10,9 +10,8 @@ const getProducts = asyncHandler( async(req , res) => {
     })
 
 const getProductById = asyncHandler(async (req, res) => {
-    console.log(typeof(req.params.id))
         const product = await Product.findById(req.params.id)
-        
+        console.log(product)
         if (product) {
           res.json(product)
         } else {
@@ -62,7 +61,7 @@ const createProductReview = asyncHandler(async (req, res) => {
 
 const searchProductbyTitle= asyncHandler(async(req,res)=>{
   const products = await Product.find({title : {$regex : req.query.q , $options : "i"}})
-  if (!products.length===0) {
+  if (!products.length==0) {
     res.json(products)
   } else {
     res.status(404)
