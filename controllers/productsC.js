@@ -6,7 +6,6 @@ const getProducts = asyncHandler( async(req , res) => {
       if (items.length==0) 
       { res.status(404); throw Error('No items');}
       else{
-      console.log(items)
       res.json(items)}
     })
 
