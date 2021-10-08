@@ -1,5 +1,6 @@
 const express = require("express")
-var session = require('express-session')
+const session = require('express-session')
+const cors = require('cors')
 
 const passport=require('passport');
 const dotenv=require("dotenv")
