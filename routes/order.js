@@ -1,11 +1,11 @@
 const router = require('express').Router();
 
-import {
-    addRentalItems,getOrderById , getMyOrders ,updateOrderToPaid, updateOrderToDelivered, updateOrderToReturned
-} from '../controllers/orderController.js'
-import { tkCheck, admin } from '../middleware/authMiddleware.js'
+const {
+    addRentalItems,getOrderById , getMyOrders ,updateOrderToPaid, updateOrderToDelivered, updateOrderToReturned,getOrders
+}=require('../controllers/ordersC.js')
+const { tkCheck, admin } =require('../middleware/authMiddleware.js')
 
-router.route('/').post(tkCheck, addRentalItems).get(tkCheck, admin)
+router.route('/').post(tkCheck, addRentalItems).get(tkCheck, admin,getOrders)
 router.route('/myorders').get(tkCheck, getMyOrders)
 router.route('/:id').get(tkCheck, getOrderById)
 router.route('/:id/pay').put(tkCheck, updateOrderToPaid)

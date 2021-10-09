@@ -1,5 +1,5 @@
-import asyncHandler from 'express-async-handler'
-import Order from '../models/Order.js'
+const asyncHandler = require( 'express-async-handler')
+const Order = require( '../models/Order.js')
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -106,4 +106,8 @@ const updateOrderToReturned = asyncHandler(async (req, res) => {
     throw new Error('Order not found')
   }
 })
-  module.exports={addRentalItems,getOrderById , getMyOrders ,updateOrderToPaid, updateOrderToDelivered, updateOrderToReturned}
+const getOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({}).populate('user', 'id name')
+  res.json(orders)
+})
+  module.exports={addRentalItems,getOrderById , getMyOrders ,updateOrderToPaid, updateOrderToDelivered, updateOrderToReturned, getOrders}

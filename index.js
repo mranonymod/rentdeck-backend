@@ -16,6 +16,7 @@ app.use(passport.session())
 require('./routes/auth')
 const productRoute = require("./routes/product")
 const userRoute = require("./routes/user")
+const orderRoutes=require("./routes/order")
 
 const db = require("./config/db")
 
@@ -27,6 +28,7 @@ app.get('/auth/google',
 passport.authenticate('google' ,{scope:['email','profile']}))
 
 app.use('/api/products', productRoute)
+app.use('/api/orders', orderRoutes)
 app.use("/api/users" , userRoute)
 app.get('/google/callback',
 

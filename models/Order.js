@@ -7,12 +7,9 @@ const   OrderSchema = new mongoose.Schema(
         required: true,
         ref: 'User',
       }, 
+      placed : { type : Boolean , required : true , default : false} ,
         orderItems: [
-          {
-            name: { type: String, required: true },
-            qty: { type: Number, required: true },
-            image: { type: String, required: true },
-            price: { type: Number, required: true },
+          { qty: { type: Number, required: true },
             product: {
               type: mongoose.Schema.Types.ObjectId,
               required: true,
@@ -80,3 +77,7 @@ const   OrderSchema = new mongoose.Schema(
 );
 
 module.exports=mongoose.model("Order", OrderSchema)
+{/* name: { type: String, required: true },
+            qty: { type: Number, required: true },
+            image: { type: String, required: true },
+            price: { type: Number, required: true }, */}
