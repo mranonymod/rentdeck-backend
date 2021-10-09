@@ -53,7 +53,11 @@ const getOrderById = asyncHandler(async (req, res) => {
   })
 
 const getMyOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ user: req.user._id })
+  const orders = await Order.find({ user: req.user._id , placed : true })
+  res.json(orders)
+})
+const getMyCart = asyncHandler(async (req, res) => {
+  const orders = await Order.find({ user: req.user._id , placed : false })
   res.json(orders)
 })
 const updateOrderToPaid = asyncHandler(async (req, res) => {
@@ -110,4 +114,4 @@ const getOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({}).populate('user', 'id name')
   res.json(orders)
 })
-  module.exports={addRentalItems,getOrderById , getMyOrders ,updateOrderToPaid, updateOrderToDelivered, updateOrderToReturned, getOrders}
+  module.exports={addRentalItems,getOrderById , getMyOrders ,getMyCart ,updateOrderToPaid, updateOrderToDelivered, updateOrderToReturned, getOrders}
