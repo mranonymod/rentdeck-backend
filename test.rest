@@ -1,0 +1,111 @@
+
+### User Registration
+POST  http://localhost:5000/api/users
+Content-Type: application/json
+
+{
+"username" : "USER1",
+"email" : "usreml1@gmail.com" ,
+"password" : "USERP"
+
+}
+
+
+### Login
+POST http://localhost:5000/api/users/login
+Content-Type: application/json
+
+{
+"username" : "Admin User",
+"password" : "123456"
+}
+### Get user profile from user
+GET http://localhost:5000/api/users/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNjE2NzU4YWUyOTcxMGJkNTQ3ZjA0MyIsImlhdCI6MTYzMzc3MzkyOCwiZXhwIjoxNjMzODYwMzI4fQ.6o6tWarcKQyDggG42WuNCEKJ-7KjQ2JyrzMdlFeTArc
+### UPDATE User Profile
+PUT http://localhost:5000/api/users/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNjE2NzU4YWUyOTcxMGJkNTQ3ZjA0MyIsImlhdCI6MTYzMzc3MzkyOCwiZXhwIjoxNjMzODYwMzI4fQ.6o6tWarcKQyDggG42WuNCEKJ-7KjQ2JyrzMdlFeTArc
+{
+"username" : "USERnew" ,
+"email" : "usremln@gmail.com",
+"password" : "pwdnew
+}
+
+### GET ALL
+GET http://localhost:5000/api/products/
+
+
+### GET A SINGLE PRODUCT TAKES IN ONLY A VALID OBJECT ID
+GET http://localhost:5000/api/products/id/615ac91d9838ab0b70058c84
+
+### SEARCH
+GET http://localhost:5000/api/products/s?q=bord
+
+###
+POST http://localhost:5000/api/products/categories
+Content-Type: application/json
+
+{
+"categories" : ["boots","pants"]
+}
+###
+GET http://localhost:5000/api/orders
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNjE2NzU4YWUyOTcxMGJkNTQ3ZjA0MyIsImlhdCI6MTYzMzc3MzkyOCwiZXhwIjoxNjMzODYwMzI4fQ.6o6tWarcKQyDggG42WuNCEKJ-7KjQ2JyrzMdlFeTArc
+
+###
+GET http://localhost:5000/api/orders/myorders
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNjE2NzU4YWUyOTcxMGJkNTQ3ZjA0MyIsImlhdCI6MTYzMzc3MzkyOCwiZXhwIjoxNjMzODYwMzI4fQ.6o6tWarcKQyDggG42WuNCEKJ-7KjQ2JyrzMdlFeTArc
+
+
+###
+GET http://localhost:5000/api/orders/61616758ae29710bd547f072
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNjE2NzU4YWUyOTcxMGJkNTQ3ZjA0MyIsImlhdCI6MTYzMzc3MzkyOCwiZXhwIjoxNjMzODYwMzI4fQ.6o6tWarcKQyDggG42WuNCEKJ-7KjQ2JyrzMdlFeTArc
+
+###
+POST http://localhost:5000/api/orders
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNjE2NzU4YWUyOTcxMGJkNTQ3ZjA0MyIsImlhdCI6MTYzMzc3MzkyOCwiZXhwIjoxNjMzODYwMzI4fQ.6o6tWarcKQyDggG42WuNCEKJ-7KjQ2JyrzMdlFeTArc
+
+{
+  "user": "61616758ae29710bd547f043",
+  "placed": true,
+  "orderItems": [
+    {
+      "qty": 5,
+      "product": "61616f32fc13ae4d5f000131"
+    },
+    {
+      "qty": 5,
+      "product": "61616f32fc13ae4d5f000132"
+    }
+  ],
+  "shippingPrice": 311,
+  "totalPrice": 2010,
+  "shippingAddress": {
+    "address": "8 Corscot Drive",
+    "city": "R S",
+    "postalCode": "395003",
+    "country": "India"
+  },
+  "paymentMethod": "Card",
+  "paymentResult": [
+    {
+      "id": "f29dcf59-6e2a-4177-ad25-8316c7056278",
+      "status": "Success",
+      "update_time": "1626283383000",
+      "email_address": "rtreagust0@tmall.com"
+    }
+  ],
+  "isPaid": true,
+  "paidAt": "1606352298000",
+  "isDelivered": false,
+  "deliveredAt": "1616150799000",
+  "isReturned": true,
+  "toBeReturnedAt": "1622005216000"
+}
+
