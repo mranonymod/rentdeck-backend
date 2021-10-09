@@ -70,15 +70,27 @@ const searchProductbyTitle= asyncHandler(async(req,res)=>{
 })
 
 const getByCategories = asyncHandler(async(req,res)=>{
+
   const cat = req.body.categories
-  const prodCat=await Product.find({categories : {"$in" : cat} })
-  if (!prodCat.length==0) {
-    res.json(prodCat)
-  } else {
-    res.status(404)
-    throw new Error('Product not found')
-  }
-})
+  console.log(typeof cat)
+  if (typeof cat === "undefined") {
+    const items = await Product.find();
+    if (items.length==0) 
+    { res.status(404); throw Error('No items');}
+    else{
+    res.json(items)}
+}
+else 
+{ 
+const prodCat=await Product.find({categories : {"$in" : cat} })
+if (!prodCat.length==0) {
+  res.json(prodCat)
+} else {
+  res.status(404)
+  throw new Error('Product not found')
+}
+}}
+)
 const getTopProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({}).sort({ rating: -1 }).limit(10)
 

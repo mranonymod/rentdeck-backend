@@ -8,7 +8,6 @@ const reviewSchema = mongoose.Schema(
       user: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'User',
       },
     },
     {
@@ -21,8 +20,8 @@ const ProductSchema = new mongoose.Schema(
         title : {type : String , required : true ,unique : true},
         desObj : { type: Object , required : true} ,
         images  : {type : [String] , required : true} ,
-        typeOf : {type : String , required : true} ,
-        categories :[ {type: String}] ,
+        categories : {type : String , required : true} ,
+        tags :[ {type: String}] ,
         rentalrate : {type : Number , required : true} ,
         condition : { type : String } ,
         countInStock: {
@@ -31,7 +30,7 @@ const ProductSchema = new mongoose.Schema(
             default: 0,
           },
         reviews: [reviewSchema],
-          rating: {
+        rating: {
             type: Number,
             required: true,
             default: 0,
