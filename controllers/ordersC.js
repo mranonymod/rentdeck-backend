@@ -44,6 +44,7 @@ const getOrderById = asyncHandler(async (req, res) => {
       'user',
       'name email'
     )
+    console.log("aa gyi request")
     if (order) {
       res.json(order)
     } else {
@@ -53,12 +54,24 @@ const getOrderById = asyncHandler(async (req, res) => {
   })
 
 const getMyOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ user: req.user._id , placed : true })
-  res.json(orders)
+  console.log("ord" + req.user)
+  const orders = await Order.find({user : req.user._id , placed : true})
+  if (orders) {
+      res.json(orders)
+    } else {
+      res.status(404)
+      throw new Error('Order not found')
+    }
 })
 const getMyCart = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ user: req.user._id , placed : false })
-  res.json(orders)
+  console.log("cart"+ req.user)
+  const orders = await Order.findOne({ user: req.user._id , placed : false })
+  if (orders) {
+      res.json(orders)
+    } else {
+      res.status(404)
+      throw new Error('Order not found')
+    }
 })
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
