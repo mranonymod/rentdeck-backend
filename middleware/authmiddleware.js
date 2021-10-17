@@ -1,4 +1,4 @@
-const jwt =require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 const asyncHandler=require('express-async-handler')
 const User =require('../models/User')
 
@@ -15,7 +15,7 @@ const tkCheck = asyncHandler(async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_KEY)
 
       req.user = await User.findById(decoded.id).select('-password')
-
+      console.log("jwt"+ req.user)
       next()
     } catch (error) {
       console.error(error)
