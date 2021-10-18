@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 // REGISTER allowed for everyone
 const registerUser = asyncHandler(async (req, res) => {
   console.log(req.body);
-  const { username, email, password } = req.body;
+  const { username, email, password ,googleId} = req.body;
   const userExists = await User.findOne({ email });
   if (userExists) {
     res.status(400);
@@ -17,7 +17,19 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     password,
     email,
+    googleId
   });
+  if(!password){newUsr
+    .save()
+    .then((response) => {
+      res.status(200).json({ success: true, result: response });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        errors: [{ error: err }],
+      });
+    });}
+    else{
   bcrypt.genSalt(10, function (err, salt) {
     bcrypt.hash(password, salt, function (err, hash) {
       if (err) throw err;
@@ -33,22 +45,29 @@ const registerUser = asyncHandler(async (req, res) => {
           });
         });
     });
-  });
+  })}
+  ;
 });
 
 //LOGIN allowed for everyone
 const loginUser = asyncHandler(async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password ,googleId} = req.body;
   console.log(username, password);
   const usr = await User.findOne({ username: username });
   console.log(usr);
 
   if (usr) {
+    if(password){
     const check = await bcrypt.compare(password, usr.password);
 
     if (check) {
       const { pass, ...snd } = usr._doc;
       res.json({ ...snd, token: genTk(usr._id) });
+    }}
+    else {
+      const id = await User.findOne({ googleId: googleId });
+      res.json({ ... usr._doc, token: genTk(usr._id) });
+      
     }
   } else {
     res.status(401);
