@@ -60,6 +60,7 @@ const createProductReview = asyncHandler(async (req, res) => {
 })
 
 const searchProductbyTitle= asyncHandler(async(req,res)=>{
+  console.log(req.query)
   const products = await Product.find({title : {$regex : req.query.q , $options : "i"}})
   if (!products.length==0) {
     res.json(products)
@@ -73,7 +74,7 @@ const getByCategories = asyncHandler(async(req,res)=>{
 
   const cat = req.body.categories
   console.log(typeof cat)
-  if (typeof cat === "undefined") {
+  if (!cat) {
     const items = await Product.find();
     if (items.length==0) 
     { res.status(404); throw Error('No items');}
