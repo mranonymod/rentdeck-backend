@@ -1,5 +1,7 @@
 const asyncHandler = require( 'express-async-handler')
+const { create } = require('../models/Order.js')
 const Order = require( '../models/Order.js')
+const Razorpay = require("razorpay");
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -29,7 +31,7 @@ const addRentalItems = asyncHandler(async (req, res) => {
       totalPrice,
     })  
     const createdOrder = await order.save()
-
+    console.log(createdOrder)
     res.status(201).json(createdOrder)}
 
 
@@ -71,20 +73,34 @@ const getMyCart = asyncHandler(async (req, res) => {
 })
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
-
   if (order) {
-    order.isPaid = true
-    order.paidAt = Date.now()
-    order.paymentResult = {
-      id: req.body.id,
-      status: req.body.status,
-      update_time: req.body.update_time,
-      email_address: req.body.payer.email_address,
+  var razorpayInstance = new Razorpay({
+    key_id: process.env.KEY_ID,
+    key_secret: process.env.KEY_SECRET,
+  });
+  razorpayInstance.orders.create(
+    {
+      amount: parseInt(order.totalPrice),
+      currency: "INR",
+      receipt: order._id,
+    },
+    (err, order) => {
+      if (err) return console.log(err);
+      console.log(order)
+      res.json(order);
+     {/* 
+      order.isPaid = true
+      order.paidAt = Date.now()
+      order.paymentResult = {
+        id: req.body.id,
+        status: req.body.status,
+        update_time: req.body.update_time,
+        email_address: req.body.payer.email_address,
+      }
+      const updatedOrder = await order.save()
+    res.json(updatedOrder)*/}
     }
-
-    const updatedOrder = await order.save()
-
-    res.json(updatedOrder)
+  );
   } else {
     res.status(404)
     throw new Error('Order not found')
@@ -123,4 +139,7 @@ const getOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({}).populate('user', 'id name')
   res.json(orders)
 })
+
+
+
   module.exports={addRentalItems,getOrderById , getMyOrders ,getMyCart ,updateOrderToPaid, updateOrderToDelivered, updateOrderToReturned, getOrders}
