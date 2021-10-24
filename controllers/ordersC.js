@@ -74,6 +74,24 @@ const getMyCart = asyncHandler(async (req, res) => {
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
   if (order) {
+      order.isPaid = true
+      order.paidAt = Date.now()
+      order.paymentResult = {
+        id: req.body.id,
+        status: req.body.status,
+        update_time: req.body.update_time,
+        email_address: req.body.email_address,
+      }
+      const updatedOrder = await order.save()
+    res.json(updatedOrder)
+  } else {
+    res.status(404)
+    throw new Error('Order not found')
+  }
+})
+const razorPay = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+  if (order) {
   var razorpayInstance = new Razorpay({
     key_id: process.env.KEY_ID,
     key_secret: process.env.KEY_SECRET,
@@ -88,17 +106,6 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
       if (err) return console.log(err);
       console.log(order)
       res.json(order);
-     {/* 
-      order.isPaid = true
-      order.paidAt = Date.now()
-      order.paymentResult = {
-        id: req.body.id,
-        status: req.body.status,
-        update_time: req.body.update_time,
-        email_address: req.body.payer.email_address,
-      }
-      const updatedOrder = await order.save()
-    res.json(updatedOrder)*/}
     }
   );
   } else {
@@ -142,4 +149,4 @@ const getOrders = asyncHandler(async (req, res) => {
 
 
 
-  module.exports={addRentalItems,getOrderById , getMyOrders ,getMyCart ,updateOrderToPaid, updateOrderToDelivered, updateOrderToReturned, getOrders}
+  module.exports={addRentalItems,getOrderById , getMyOrders ,getMyCart ,updateOrderToPaid, updateOrderToDelivered, updateOrderToReturned, getOrders , razorPay}
