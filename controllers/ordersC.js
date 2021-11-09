@@ -135,6 +135,7 @@ const updateOrderToReturned = asyncHandler(async (req, res) => {
 
   if (order) {
     order.isReturned = true
+    order.returnedAt = Date.now()
     const updatedOrder = await order.save()
 
     res.json(updatedOrder)
