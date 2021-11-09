@@ -2,7 +2,7 @@ const Product = require('../models/Product.js')
 const asyncHandler =require('express-async-handler')
 
 const getProducts = asyncHandler( async(req , res) => {
-      const items = await Product.find();
+      const items = await Product.aggregate([{$sample : { size : 20}}]);
       if (items.length==0) 
       { res.status(404); throw Error('No items');}
       else{
