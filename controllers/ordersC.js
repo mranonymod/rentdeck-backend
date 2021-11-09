@@ -53,8 +53,9 @@ const getOrderById = asyncHandler(async (req, res) => {
 
 const getMyOrders = asyncHandler(async (req, res) => {
   console.log("ord" + req.user)
-  const orders = await Order.find({user : req.user._id , placed : true})
+  const orders = await Order.find({user : req.user._id})
   if (orders) {
+    console.log(orders)
       res.json(orders)
     } else {
       res.status(404)
