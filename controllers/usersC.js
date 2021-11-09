@@ -52,6 +52,7 @@ const registerUser = asyncHandler(async (req, res) => {
 //LOGIN allowed for everyone
 const loginUser = asyncHandler(async (req, res) => {
   const { username, password ,googleId} = req.body;
+  console.log("LOGIN CHECK")
   console.log(username, password);
   const usr = await User.findOne({ username: username });
   console.log(usr);
@@ -96,12 +97,12 @@ const getUserProfile = asyncHandler(async (req, res) => {
 //update user profile for user
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-
+  console.log("UPDATE USER CHECK")
   if (user) {
     user.username = req.body.username || user.username;
     user.email = req.body.email || user.email;
     if (req.body.password) {
-      user.password = req.body.password;
+      user.password = bcrypt.hashSync(req.body.password,10);
     }
 
     const updUser = await user.save();
