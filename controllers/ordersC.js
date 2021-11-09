@@ -121,7 +121,7 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
   if (order) {
     order.isDelivered = true
     order.deliveredAt = Date.now()
-
+    order.toBeReturnedAt=order.deliveredAt(order.deliveredAt.getMonth()+1)
     const updatedOrder = await order.save()
 
     res.json(updatedOrder)
