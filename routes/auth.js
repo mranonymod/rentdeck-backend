@@ -8,7 +8,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://rentdeck-backend1.herokuapp.com/google/callback",
+      callbackURL: "http://localhost:5000/google/callback",
       passReqToCallback: true,
     },
     function (request, accessToken, refreshToken, profile, done) {
