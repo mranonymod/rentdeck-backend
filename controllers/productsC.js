@@ -8,6 +8,14 @@ const getProducts = asyncHandler( async(req , res) => {
       else{
       res.json(items)}
     })
+const someProducts = asyncHandler( async(req , res) => {
+  console.log(req)
+      const items = await Product.aggregate([{$sample : { size : parseInt(req.query.n)}}]);
+      if (items.length==0) 
+      { res.status(404); throw Error('No items');}
+      else{
+      res.json(items)}
+    })
 
 const getProductById = asyncHandler(async (req, res) => {
         const product = await Product.findById(req.params.id)
@@ -104,5 +112,6 @@ module.exports={
   createProductReview,
   getTopProducts,
   searchProductbyTitle,
-  getByCategories
+  getByCategories,
+  someProducts
 }
