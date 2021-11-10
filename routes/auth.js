@@ -2,7 +2,6 @@ const passport = require("passport");
 require("dotenv").config();
 var GoogleStrategy = require("passport-google-oauth2").Strategy;
 const User = require("../models/User");
-console.log(process.env.GOOGLE_CLIENT_ID);
 passport.use(
   new GoogleStrategy(
     {
@@ -14,7 +13,7 @@ passport.use(
     function (request, accessToken, refreshToken, profile, done) {
       User.findOne({ googleId: profile.id }).then((existingUser) => {
         if (existingUser) {
-          console.log(accessToken, existingUser);
+          
           done(null, existingUser);
         } else {
           // new user case
@@ -26,7 +25,6 @@ passport.use(
           })
             .save()
             .then((user) => {
-              console.log(accessToken, user);
               done(null, user);
             });
         }

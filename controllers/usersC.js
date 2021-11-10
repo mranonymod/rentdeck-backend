@@ -53,7 +53,6 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { username, password ,googleId} = req.body;
   console.log("LOGIN CHECK")
-  console.log(username, password);
   const usr = await User.findOne({ username: username });
   console.log(usr);
 

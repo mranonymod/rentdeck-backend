@@ -31,7 +31,7 @@ const addRentalItems = asyncHandler(async (req, res) => {
       totalPrice,
     })  
     const createdOrder = await order.save()
-    console.log(createdOrder)
+    console.log("ORDER CREATED")
     res.status(201).json(createdOrder)}
 
 
@@ -42,7 +42,7 @@ const getOrderById = asyncHandler(async (req, res) => {
       'user',
       'name email'
     )
-    console.log("aa gyi request")
+    console.log("ORDER FETCHED BY ID")
     if (order) {
       res.json(order)
     } else {
@@ -52,7 +52,7 @@ const getOrderById = asyncHandler(async (req, res) => {
   })
 
 const getMyOrders = asyncHandler(async (req, res) => {
-  console.log("ord" + req.user)
+  console.log("ALL ORDERS FOR USER FETCHED")
   const orders = await Order.find({user : req.user._id})
   if (orders) {
     console.log(orders)

@@ -15,7 +15,7 @@ const tkCheck = asyncHandler(async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_KEY)
 
       req.user = await User.findById(decoded.id).select('-password')
-      console.log("jwt"+ req.user)
+      console.log("jwt AUTH SUCCESS")
       next()
     } catch (error) {
       console.error(error)
