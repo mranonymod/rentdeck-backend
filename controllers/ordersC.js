@@ -117,11 +117,12 @@ const razorPay = asyncHandler(async (req, res) => {
 
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
-
+  console.log(order)
   if (order) {
     order.isDelivered = true
     order.deliveredAt = Date.now()
-    order.toBeReturnedAt=order.deliveredAt(order.deliveredAt.getMonth()+1)
+    console.log(order)
+    order.toBeReturnedAt=order.deliveredAt.setMonth(order.deliveredAt.getMonth()+1)
     const updatedOrder = await order.save()
 
     res.json(updatedOrder)
