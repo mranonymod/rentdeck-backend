@@ -2,15 +2,15 @@ const Product = require('../models/Product.js')
 const asyncHandler =require('express-async-handler')
 
 const getProducts = asyncHandler( async(req , res) => {
-      const items = await Product.aggregate([{$sample : { size : 20}}]);
+      const items = await Product.aggregate([{$sample : { size : 20}} , {$match : {countInStock : { $gte : 1} } } ] );
       if (items.length==0) 
       { res.status(404); throw Error('No items');}
       else{
       res.json(items)}
     })
 const someProducts = asyncHandler( async(req , res) => {
-  console.log(req)
-      const items = await Product.aggregate([{$sample : { size : parseInt(req.query.n)}}]);
+  console.log("SOME PRODUCTS FETCHED")
+      const items = await Product.aggregate([{$sample : { size : parseInt(req.query.n)}}, {$match : {countInStock : { $gte : 1} } }]);
       if (items.length==0) 
       { res.status(404); throw Error('No items');}
       else{
@@ -19,7 +19,7 @@ const someProducts = asyncHandler( async(req , res) => {
 
 const getProductById = asyncHandler(async (req, res) => {
         const product = await Product.findById(req.params.id)
-        console.log(product)
+        console.log("PRODUCT FETCHED BY ID")
         if (product) {
           res.json(product)
         } else {
@@ -68,7 +68,7 @@ const createProductReview = asyncHandler(async (req, res) => {
 })
 
 const searchProductbyTitle= asyncHandler(async(req,res)=>{
-  console.log(req.query)
+  console.log("PRODUCT SEARCHED BY TITLE")
   const products = await Product.find({title : {$regex : req.query.q , $options : "i"}})
   if (!products.length==0) {
     res.json(products)
@@ -81,7 +81,7 @@ const searchProductbyTitle= asyncHandler(async(req,res)=>{
 const getByCategories = asyncHandler(async(req,res)=>{
 
   const cat = req.body.categories
-  console.log(typeof cat)
+  console.log("PRODUCTS BROWSED BY CATEGORIES")
   if (!cat) {
     const items = await Product.find();
     if (items.length==0) 
