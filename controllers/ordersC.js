@@ -13,7 +13,9 @@ const addRentalItems = asyncHandler(async (req, res) => {
     paymentMethod,
     itemsPrice,
     shippingPrice,
-    totalPrice
+    totalPrice,
+    deposit,
+    duration
   } = req.body
 
   if (orderItems && orderItems.length === 0) {
@@ -29,6 +31,8 @@ const addRentalItems = asyncHandler(async (req, res) => {
       itemsPrice,
       shippingPrice,
       totalPrice,
+      deposit,
+      duration
     })  
     const createdOrder = await order.save()
     console.log("ORDER CREATED")
