@@ -118,12 +118,13 @@ const razorPay = asyncHandler(async (req, res) => {
 
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
-  console.log("here" + typeof(order.duration))
+  const {deliveredAt , toBeReturnedAt}=req.body
   if (order) {
-    order.isDelivered = true
-    order.deliveredAt=getDate()
-    order.toBeReturnedAt=getDate().setMonth(getDate()+order.duration)
-    console.log(order.toBeReturnedAt)
+    order.isDelivered=true
+    order.deliveredAt=deliveredAt
+    order.toBeReturnedAt=toBeReturnedAt
+    
+
     const updatedOrder = await order.save()
 
     res.json(updatedOrder)
@@ -134,10 +135,11 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
 })
 const updateOrderToReturned = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
-
+  console.log(req.body)
+  const {returnedAt}=req.body
   if (order) {
     order.isReturned = true
-    order.returnedAt = Date.now()
+    order.returnedAt = returnedAt
     const updatedOrder = await order.save()
 
     res.json(updatedOrder)
@@ -150,11 +152,7 @@ const getOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({}).populate('user', 'id name')
   res.json(orders)
 })
-const getDate = () =>
-{
-  console.log()
-  return Date.now()
-}
+
 
 
   module.exports={addRentalItems,getOrderById , getMyOrders ,getMyCart ,updateOrderToPaid, updateOrderToDelivered, updateOrderToReturned, getOrders , razorPay}
