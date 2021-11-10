@@ -22,6 +22,10 @@ const   OrderSchema = new mongoose.Schema(
             required: true,
             default: 0.0,
           },
+        deposit: {
+            type: Number,
+            required: true,
+            default: 0.0},
         totalPrice: {
             type: Number,
             required: true,
@@ -68,6 +72,11 @@ const   OrderSchema = new mongoose.Schema(
                 required: true,
                 default: false,
               },
+        duration :{
+          type : Number,
+          required:true,
+          default : 1,
+        },
         toBeReturnedAt: {
                 type: Date,
               },
