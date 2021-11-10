@@ -17,7 +17,6 @@ const addRentalItems = asyncHandler(async (req, res) => {
     deposit,
     duration
   } = req.body
-
   if (orderItems && orderItems.length === 0) {
     res.status(400)
     throw new Error('No order items')
@@ -59,7 +58,6 @@ const getMyOrders = asyncHandler(async (req, res) => {
   console.log("ALL ORDERS FOR USER FETCHED")
   const orders = await Order.find({user : req.user._id})
   if (orders) {
-    console.log(orders)
       res.json(orders)
     } else {
       res.status(404)
@@ -67,7 +65,7 @@ const getMyOrders = asyncHandler(async (req, res) => {
     }
 })
 const getMyCart = asyncHandler(async (req, res) => {
-  console.log("cart"+ req.user)
+  console.log("cart")
   const orders = await Order.findOne({ user: req.user._id , placed : false })
   if (orders) {
       res.json(orders)
@@ -109,7 +107,6 @@ const razorPay = asyncHandler(async (req, res) => {
     },
     (err, order) => {
       if (err) return console.log(err);
-      console.log(order)
       res.json(order);
     }
   );
@@ -121,12 +118,12 @@ const razorPay = asyncHandler(async (req, res) => {
 
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
-  console.log(order)
+  console.log("here" + typeof(order.duration))
   if (order) {
     order.isDelivered = true
-    order.deliveredAt = Date.now()
-    console.log(order)
-    order.toBeReturnedAt=order.deliveredAt.setMonth(order.deliveredAt.getMonth()+1)
+    order.deliveredAt=getDate()
+    order.toBeReturnedAt=getDate().setMonth(getDate()+order.duration)
+    console.log(order.toBeReturnedAt)
     const updatedOrder = await order.save()
 
     res.json(updatedOrder)
@@ -153,7 +150,11 @@ const getOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({}).populate('user', 'id name')
   res.json(orders)
 })
-
+const getDate = () =>
+{
+  console.log()
+  return Date.now()
+}
 
 
   module.exports={addRentalItems,getOrderById , getMyOrders ,getMyCart ,updateOrderToPaid, updateOrderToDelivered, updateOrderToReturned, getOrders , razorPay}
