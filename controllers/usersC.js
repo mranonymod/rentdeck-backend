@@ -5,7 +5,6 @@ const bcrypt = require("bcryptjs");
 
 // REGISTER allowed for everyone
 const registerUser = asyncHandler(async (req, res) => {
-  console.log(req.body);
   const { username, email, password ,googleId} = req.body;
   const userExists = await User.findOne({ email });
   if (userExists) {
@@ -19,10 +18,14 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     googleId
   });
-  if(!password){newUsr
+  if(!password){
+    console.log("idhar hu")
+    newUsr
     .save()
-    .then((response) => {
-      res.status(200).json({ success: true, result: response });
+    .then((rez) => {
+      console.log("here1")
+      const { ...snd } = newUsr._doc;
+      res.status(200).json({...snd ,token: genTk(newUsr._id)});
     })
     .catch((err) => {
       res.status(500).json({
@@ -30,16 +33,20 @@ const registerUser = asyncHandler(async (req, res) => {
       });
     });}
     else{
+      console.log("nahi idhar hu")
   bcrypt.genSalt(10, function (err, salt) {
     bcrypt.hash(password, salt, function (err, hash) {
       if (err) throw err;
       newUsr.password = hash;
       newUsr
         .save()
-        .then((response) => {
-          res.status(200).json({ success: true, result: response });
+        .then((rez) => {
+          const { password, ...snd } = newUsr._doc;
+          console.log(password , snd)
+          res.status(200).json({...snd ,token: genTk(newUsr._id)});
         })
         .catch((err) => {
+          console.log(err)
           res.status(500).json({
             errors: [{ error: err }],
           });
@@ -54,8 +61,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const { username, password ,googleId} = req.body;
   console.log("LOGIN CHECK")
   const usr = await User.findOne({ username: username });
-  console.log(usr);
-
+console.log("here")
   if (usr) {
     if(password){
     const check = await bcrypt.compare(password, usr.password);
@@ -71,6 +77,7 @@ const loginUser = asyncHandler(async (req, res) => {
     }
   } else {
     res.status(401);
+    console.log("here")
     throw new Error("Invalid email or password");
   }
 });
